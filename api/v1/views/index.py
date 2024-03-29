@@ -29,3 +29,9 @@ def retrieve_stats():
     for key in classes.keys():
         stats[key] = storage.count(classes[key])
     return stats
+
+
+@app_views.app_errorhandler(404)
+def invalid_route(e):
+    """Handles all 404 error"""
+    return {"error": "Not found"}
