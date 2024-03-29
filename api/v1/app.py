@@ -15,9 +15,9 @@ app.register_blueprint(app_views)
 
 @app.teardown_appcontext
 def close_storage(exception):
-	"""For closing sessions of database"""
-	storage.close()
+    """For closing sessions of database"""
+    storage.close()
 
 
 if __name__ == "__main__":
-	app.run(host=host, port=port, threaded=True)
+    app.run(host=host, port=port, threaded=True)
