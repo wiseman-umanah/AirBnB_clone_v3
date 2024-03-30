@@ -15,12 +15,12 @@ def get_places(places_id=None):
     if places_id:
         place = storage.get(Place, places_id)
         if place is None:
-            abort(404)
+            return jsonify({"error": "Place not found"}), 404
         return jsonify(place.to_dict())
 
 
-
-@app_views.route('/cities/<city_id>/places', methods=['GET'], strict_slashes=False)
+@app_views.route('/cities/<city_id>/places',
+                 methods=['GET'], strict_slashes=False)
 def get_places_city_id(city_id):
     """Retrieves the list of all Place objects of a City"""
     city = storage.all(City)
@@ -37,13 +37,14 @@ def delete_places(place_id):
     """deletes a place based on its city_id"""
     place = storage.get(Place, place_id)
     if place is None:
-        abort(404)
+        return jsonify({"error": "Place not found"}), 404
     storage.delete(place)
     storage.save()
     return jsonify({}), 200
 
 
-@app_views.route('/cities/<city_id>/places', methods=['POST'], strict_slashes=False)
+@app_views.route('/cities/<city_id>/places', methods=['POST'],
+                 strict_slashes=False)
 def post_places(city_id):
     """Transforms HTTP to a dictionary"""
     data = request.get_json()

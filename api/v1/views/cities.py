@@ -8,7 +8,8 @@ from models import storage
 from flask import jsonify, request, abort
 
 
-@app_views.route('/cities/<cities_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/cities/<cities_id>',
+                 methods=['GET'], strict_slashes=False)
 def get_cities(cities_id=None):
     """get city information for all cities"""
     if cities_id:
@@ -18,8 +19,8 @@ def get_cities(cities_id=None):
         return jsonify(city.to_dict())
 
 
-
-@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities',
+                 methods=['GET'], strict_slashes=False)
 def get_cities_state_id(state_id):
     """Retrieves the list of all City objects of a State"""
     state = storage.all(State)
@@ -42,7 +43,8 @@ def delete_cities(city_id):
     return jsonify({}), 200
 
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['POST'],
+                 strict_slashes=False)
 def post_cities(state_id):
     """Transforms HTTP to a dictionary"""
     data = request.get_json()

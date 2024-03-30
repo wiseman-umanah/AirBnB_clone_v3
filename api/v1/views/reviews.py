@@ -19,8 +19,8 @@ def get_reviews(review_id=None):
         return jsonify(review.to_dict())
 
 
-
-@app_views.route('/places/<place_id>/reviews', methods=['GET'], strict_slashes=False)
+@app_views.route('/places/<place_id>/reviews', methods=['GET'],
+                 strict_slashes=False)
 def get_reviews_place_id(place_id):
     """Retrieves the list of all Review objects of a Place"""
     place = storage.all(Place)
@@ -43,7 +43,8 @@ def delete_reviews(review_id):
     return jsonify({}), 200
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['POST'], strict_slashes=False)
+@app_views.route('/places/<place_id>/reviews', methods=['POST'],
+                 strict_slashes=False)
 def post_reviews(place_id):
     """Transforms HTTP to a dictionary"""
     data = request.get_json()
@@ -54,16 +55,17 @@ def post_reviews(place_id):
     if "text" not in data:
         return jsonify("Missing text"), 400
     else:
-        if storage.get(Place, place_id) and storage.get(State, data["user_id"]):
-            new_review = Review()
-            new_review.user_id = data["user_id"]
-            new_review.text = data["text"]
-            new_review.place_id = place_id
-            storage.new(new_review)
-            storage.save()
-            return jsonify(new_review.to_dict()), 201
-        else:
-            abort(404)
+        if storage.get(Place, place_id):
+            if storage.get(State, data["user_id"]):
+                new_review = Review()
+                new_review.user_id = data["user_id"]
+                new_review.text = data["text"]
+                new_review.place_id = place_id
+                storage.new(new_review)
+                storage.save()
+                return jsonify(new_review.to_dict()), 201
+            return jsonify({"error": "Place not found"}), 404
+        return jsonify({"error": "Place not found"}), 404
 
 
 @app_views.route('/reviews/<review_id>', methods=['PUT'], strict_slashes=False)
