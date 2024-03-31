@@ -22,9 +22,9 @@ def close_storage(exception):
     storage.close()
 
 
-@app_views.app_errorhandler(404)
-def invalid_route(e):
-    """Handles all 404 error"""
+@app.errorhandler(404)
+def not_found(error):
+    """Handle 404 errors by returning a custom JSON response."""
     return jsonify({"error": "Not found"}), 404
 
 
