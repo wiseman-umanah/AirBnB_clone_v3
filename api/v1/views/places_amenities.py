@@ -1,4 +1,4 @@
-#!/usr.bin/python3
+#!/usr/bin/python3
 """ new view for Place objects that handles
 all default RESTFul API actions"""
 from models.place import Place
